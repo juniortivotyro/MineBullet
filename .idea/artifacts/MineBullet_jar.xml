@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="MineBullet:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/MineBullet_jar/plugins</output-path>
+    <root id="archive" name="MineBullet.jar">
+      <element id="module-output" name="MineBullet" />
+      <element id="extracted-dir" path="E:/spigot-api-1.12.2-R0.1-SNAPSHOT-shaded-b1427.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
