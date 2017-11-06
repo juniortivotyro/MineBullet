@@ -6,7 +6,7 @@ public class MineBullet extends JavaPlugin{
 
     @Override
     public void onEnable(){
-        getLogger().info("#Plugin Enabled");
+        getLogger().info("Plugin Enabled");
     }
     @Override
     public void onDisable(){
