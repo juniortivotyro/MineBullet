@@ -22,3 +22,7 @@ Click on the picture to go to the spigot page
  * Restart Server
  * Edit Config
  * Restart Server
+
+# Permissions
+ * minebullet.*
+ * minebullet.alert
