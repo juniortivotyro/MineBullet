@@ -17,8 +17,7 @@ public class MineBullet extends JavaPlugin implements Listener{
         getLogger().info("Plugin Enabled 1");
         getServer().getPluginManager().registerEvents(this, this);
     }
-    String apiToken = "o.KscEoYBLXucrfbM0zdokuyVKi7QglIwd\n";
-    Pushbullet pushbullet = new Pushbullet(apiToken);
+    private String apiToken = "o.KscEoYBLXucrfbM0zdokuyVKi7QglIwd";
 
     @Override
     public void onDisable(){
@@ -27,6 +26,7 @@ public class MineBullet extends JavaPlugin implements Listener{
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
     {
+        Pushbullet pushbullet = new Pushbullet(apiToken);
         Player player = event.getPlayer();
         getLogger().log(Level.INFO, "Player Has Joined");
         player.sendMessage("Hello, " + player.getName()+". This is MineBullet testing.");
