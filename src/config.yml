@@ -1,3 +1,5 @@
-Access Token: "ABCD.......ABCD"
-Push when player joins the game?: true
-Push when player leaves the game?: false
+token: "ABCD.......ABCD"
+joinPush: true
+leavePush: true
+banPush: true
+debug: false

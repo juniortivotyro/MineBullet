@@ -3,7 +3,6 @@ package com.cdhoff.MineBullet;
 import com.github.sheigutn.pushbullet.Pushbullet;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.SendableNotePush;
-import com.google.common.base.Joiner;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -84,7 +83,7 @@ public class MineBullet extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent joinEvent)
     {
-        if(this.getConfig().getBoolean("Push when player joins the game?")) {
+        if(this.getConfig().getBoolean("joinPush")) {
             Player player = joinEvent.getPlayer();
                 if(this.getConfig().getBoolean("debug"))
                     player.sendMessage("Hello, " + player.getName() + ". Minebullet is in debug mode!.");
@@ -105,17 +104,30 @@ public class MineBullet extends JavaPlugin implements Listener {
     }
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent leaveEvent) {
-        if (this.getConfig().getBoolean("Push when player leaves the game?")) {
+        if (this.getConfig().getBoolean("leavePush")) {
             Player player = leaveEvent.getPlayer();
             getLogger().log(Level.INFO, player.getName() + "  has left, and Minebullet push on player leave enabled, pushing.");
-            SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left.");
-            try {
-                pushbullet.push(note);
-                if (this.getConfig().getBoolean("debug"))
-                    getLogger().log(Level.INFO, "Successful Push");
-            } catch (Exception e) {
-                //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
-                getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+            if(!player.isBanned()) {
+                SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left.");
+                try {
+                    pushbullet.push(note);
+                    if (this.getConfig().getBoolean("debug"))
+                        getLogger().log(Level.INFO, "Successful Push");
+                } catch (Exception e) {
+                    getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+                }
+            }else{
+                if(this.getConfig().getBoolean("banPush")) {
+                    SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has been banned!");
+                    try {
+                        pushbullet.push(note);
+                        if (this.getConfig().getBoolean("debug"))
+                            getLogger().log(Level.INFO, "Successful Push");
+                    } catch (Exception e) {
+                        //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+                        getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+                    }
+                }
             }
         }
     }
