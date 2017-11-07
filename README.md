@@ -13,7 +13,7 @@ Minebullet is a spigot plugin that allows you to get Pushbullet notifications ab
 * joinPush - Get a notification when a player joins
 * leavePush - Get a notification when a player leaves
 * debug - Extra console output
-* 
+
 # Installation
  * Add file to plugins folder
  * Restart Server
