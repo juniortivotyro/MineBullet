@@ -55,7 +55,7 @@ public class MineBullet extends JavaPlugin implements Listener {
             Player player = joinEvent.getPlayer();
                 if(this.getConfig().getBoolean("debug") == true)
                     player.sendMessage("Hello, " + player.getName() + ". Minebullet is in debug mode!.");
-            getLogger().log(Level.INFO, player.getName() + "  has joined, and Minebullet push on player leave enables, pushing.");
+            getLogger().log(Level.INFO, player.getName() + "  has joined, and Minebullet push on player leave enabled, pushing.");
 
             Pushbullet pushbullet = new Pushbullet(this.apiToken);
             SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has joined.");
@@ -74,8 +74,7 @@ public class MineBullet extends JavaPlugin implements Listener {
     public void onPlayerLeave(PlayerQuitEvent leaveEvent) {
         if (this.getConfig().getBoolean("Push when player leaves the game?") == true) {
             Player player = leaveEvent.getPlayer();
-            getLogger().log(Level.INFO, player.getName() + " Has Left");
-
+            getLogger().log(Level.INFO, player.getName() + "  has left, and Minebullet push on player leave enabled, pushing.");
             Pushbullet pushbullet = new Pushbullet(this.apiToken);
             SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left.");
             try {
