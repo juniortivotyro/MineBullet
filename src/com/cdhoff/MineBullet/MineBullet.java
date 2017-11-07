@@ -16,7 +16,7 @@ import java.util.logging.Level;
 
 public class MineBullet extends JavaPlugin implements Listener {
 
-    private String apiToken = this.getConfig().getString("token");
+    private String apiToken = this.getConfig().getString("Access Token");
 
     private void createConfig() {
 
@@ -38,6 +38,7 @@ public class MineBullet extends JavaPlugin implements Listener {
         getLogger().info("Plugin Enabled");
         getServer().getPluginManager().registerEvents(this, this);
         createConfig();
+        
     }
 
 
@@ -60,6 +61,7 @@ public class MineBullet extends JavaPlugin implements Listener {
 
         try {
             pushbullet.push(note);
+            if(this.getConfig().getBoolean("debug") == true){getLogger().log(Level.INFO, "Successful Push");}
         } catch (Exception e) {
             //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
             getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
@@ -74,8 +76,14 @@ public class MineBullet extends JavaPlugin implements Listener {
             getLogger().log(Level.INFO, player.getName() + " Has Left");
 
             Pushbullet pushbullet = new Pushbullet(this.apiToken);
-            SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left.");
-            pushbullet.pushToAllDevices(note);
+            SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left, and Minebullet push on player leave enables, pushing.");
+            try {
+                pushbullet.push(note);
+                if(this.getConfig().getBoolean("debug") == true){getLogger().log(Level.INFO, "Successful Push");}
+            } catch (Exception e) {
+                //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+                getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+            }
         }
     }
 
