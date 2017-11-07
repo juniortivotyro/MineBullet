@@ -1,6 +1,8 @@
-![N|Minebullet](https://github.com/juniortivotyro/MineBullet/blob/master/src/com/cdhoff/MineBullet/Logo.png?raw=true)
+[![N|Solid](https://github.com/juniortivotyro/MineBullet/blob/master/src/com/cdhoff/MineBullet/Logo.png?raw=true)](https://www.spigotmc.org/resources/minebucket.49309/)
 
-Minebullet is a spigot plugin that allows you to get Pushbullet notifications about various server things!
+Minebullet is a spigot plugin that allows you to get Pushbullet notifications about various server things! 
+
+Click on the picture to go to the spigot page
  
 
 # Features!
