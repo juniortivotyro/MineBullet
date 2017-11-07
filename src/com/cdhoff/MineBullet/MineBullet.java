@@ -15,12 +15,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.logging.Level;
 
 public class MineBullet extends JavaPlugin implements Listener {
 
     private String apiToken = this.getConfig().getString("Access Token");
+    Pushbullet pushbullet = new Pushbullet(this.apiToken);
+
 
     private void createConfig() {
 
@@ -42,14 +43,16 @@ public class MineBullet extends JavaPlugin implements Listener {
         getLogger().info("Plugin Enabled");
         getServer().getPluginManager().registerEvents(this, this);
         createConfig();
-
+        SendablePush note = new SendableNotePush("Minecraft", "Server is starting!");
+        pushbullet.push(note);
     }
 
 
 
     @Override
     public void onDisable(){
-        //Fired when the server stops and disables all plugins
+        SendablePush note = new SendableNotePush("Minecraft", "Server is stopping!");
+        pushbullet.push(note);
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -69,7 +72,7 @@ public class MineBullet extends JavaPlugin implements Listener {
                 String msg = builder.toString();
 
 
-                SendablePush note = new SendableNotePush("Minecraft", sender.getName() + " has sent a message: " + msg);
+                SendablePush note = new SendableNotePush(sender.getName() + " has sent a message",msg);
                 pushbullet.push(note);
                 sender.sendMessage("Your Message has been sent to an admin!");
             } else sender.sendMessage("§cYou don't have permission to broadcast!");
@@ -105,7 +108,6 @@ public class MineBullet extends JavaPlugin implements Listener {
         if (this.getConfig().getBoolean("Push when player leaves the game?")) {
             Player player = leaveEvent.getPlayer();
             getLogger().log(Level.INFO, player.getName() + "  has left, and Minebullet push on player leave enabled, pushing.");
-            Pushbullet pushbullet = new Pushbullet(this.apiToken);
             SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left.");
             try {
                 pushbullet.push(note);
