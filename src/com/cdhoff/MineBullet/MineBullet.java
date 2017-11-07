@@ -62,10 +62,9 @@ public class MineBullet extends JavaPlugin implements Listener {
             if (sender.hasPermission("minebullet.alert"))
             {
                 Pushbullet pushbullet = new Pushbullet(this.apiToken);
-                String string = sender.getName() + "has sent an important alert:" + Arrays.toString(args);
                 StringBuilder builder = new StringBuilder();
-                for(int i = 0; i < args.length; i++) {
-                    builder.append(args[i] + " ");
+                for (String arg : args) {
+                    builder.append(arg + " ");
                 }
                 String msg = builder.toString();
 
@@ -82,9 +81,9 @@ public class MineBullet extends JavaPlugin implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent joinEvent)
     {
-        if(this.getConfig().getBoolean("Push when player joins the game?") == true) {
+        if(this.getConfig().getBoolean("Push when player joins the game?")) {
             Player player = joinEvent.getPlayer();
-                if(this.getConfig().getBoolean("debug") == true)
+                if(this.getConfig().getBoolean("debug"))
                     player.sendMessage("Hello, " + player.getName() + ". Minebullet is in debug mode!.");
             getLogger().log(Level.INFO, player.getName() + "  has joined, and Minebullet push on player leave enabled, pushing.");
 
@@ -93,7 +92,7 @@ public class MineBullet extends JavaPlugin implements Listener {
 
             try {
                 pushbullet.push(note);
-                if(this.getConfig().getBoolean("debug") == true)
+                if(this.getConfig().getBoolean("debug"))
                     getLogger().log(Level.INFO, "Successful Push");
             } catch (Exception e) {
                 //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
@@ -103,14 +102,14 @@ public class MineBullet extends JavaPlugin implements Listener {
     }
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent leaveEvent) {
-        if (this.getConfig().getBoolean("Push when player leaves the game?") == true) {
+        if (this.getConfig().getBoolean("Push when player leaves the game?")) {
             Player player = leaveEvent.getPlayer();
             getLogger().log(Level.INFO, player.getName() + "  has left, and Minebullet push on player leave enabled, pushing.");
             Pushbullet pushbullet = new Pushbullet(this.apiToken);
             SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left.");
             try {
                 pushbullet.push(note);
-                if (this.getConfig().getBoolean("debug") == true)
+                if (this.getConfig().getBoolean("debug"))
                     getLogger().log(Level.INFO, "Successful Push");
             } catch (Exception e) {
                 //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
