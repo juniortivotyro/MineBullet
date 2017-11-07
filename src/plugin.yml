@@ -2,3 +2,14 @@ name: MineBullet
 version: 0.1
 author: CDHoff
 main: com.cdhoff.MineBullet.MineBullet
+commands:
+  alert:
+    description: Alerts an admin about an important matter
+    usage: /alert <message>
+permissions:
+  minebullet.*:
+    description: Gives access to all commands.
+    children:
+      minebullet.alert: true
+  minebullet.alert:
+    description: Allows you to alert a moderator.

@@ -3,7 +3,10 @@ package com.cdhoff.MineBullet;
 import com.github.sheigutn.pushbullet.Pushbullet;
 import com.github.sheigutn.pushbullet.items.push.sendable.SendablePush;
 import com.github.sheigutn.pushbullet.items.push.sendable.defaults.SendableNotePush;
+import com.google.common.base.Joiner;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,6 +15,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 public class MineBullet extends JavaPlugin implements Listener {
@@ -47,7 +51,34 @@ public class MineBullet extends JavaPlugin implements Listener {
     public void onDisable(){
         //Fired when the server stops and disables all plugins
     }
-    
+
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    {
+        if(cmd.getName().equalsIgnoreCase("alert"))
+        {
+            if (args.length < 1)
+                return false;
+
+            if (sender.hasPermission("minebullet.alert"))
+            {
+                Pushbullet pushbullet = new Pushbullet(this.apiToken);
+                String string = sender.getName() + "has sent an important alert:" + Arrays.toString(args);
+                StringBuilder builder = new StringBuilder();
+                for(int i = 0; i < args.length; i++) {
+                    builder.append(args[i] + " ");
+                }
+                String msg = builder.toString();
+
+
+                SendablePush note = new SendableNotePush("Minecraft", sender.getName() + " has sent a message: " + msg);
+                pushbullet.push(note);
+                sender.sendMessage("Your Message has been sent to an admin!");
+            } else sender.sendMessage("§cYou don't have permission to broadcast!");
+            return true;
+        }
+        return false;
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent joinEvent)
     {
@@ -79,7 +110,7 @@ public class MineBullet extends JavaPlugin implements Listener {
             SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left.");
             try {
                 pushbullet.push(note);
-                if(this.getConfig().getBoolean("debug") == true)
+                if (this.getConfig().getBoolean("debug") == true)
                     getLogger().log(Level.INFO, "Successful Push");
             } catch (Exception e) {
                 //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
