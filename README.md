@@ -1,4 +1,4 @@
-[![N|Solid](https://github.com/juniortivotyro/MineBullet/blob/master/src/com/cdhoff/MineBullet/Logo.png?raw=true)](https://nodesource.com/products/nsolid)
+[![N|Solid](https://github.com/juniortivotyro/MineBullet/blob/master/src/com/cdhoff/MineBullet/Logo.png?raw=true)]
 
 Minebullet is a spigot plugin that allows you to get Pushbullet notifications about various server things!
  
