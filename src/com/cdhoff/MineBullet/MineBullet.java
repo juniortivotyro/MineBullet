@@ -20,15 +20,15 @@ public class MineBullet extends JavaPlugin implements Listener {
 
     private void createConfig() {
 
-        if (!getDataFolder().exists()) {
-            getDataFolder().mkdirs();
-        }
-        File file = new File(getDataFolder(), "config.yml");
-        if (!file.exists()) {
-            getLogger().info("Config.yml not found, creating!");
-            saveDefaultConfig();
-        } else {
-            getLogger().info("Config.yml found, loading!");
+            if (!getDataFolder().exists()) {
+                getDataFolder().mkdirs();
+            }
+            File file = new File(getDataFolder(), "config.yml");
+            if (!file.exists()) {
+                getLogger().info("Config.yml not found, creating!");
+                saveDefaultConfig();
+            } else {
+                getLogger().info("Config.yml found, loading!");
         }
 
 
@@ -38,7 +38,7 @@ public class MineBullet extends JavaPlugin implements Listener {
         getLogger().info("Plugin Enabled");
         getServer().getPluginManager().registerEvents(this, this);
         createConfig();
-        
+
     }
 
 
@@ -52,34 +52,36 @@ public class MineBullet extends JavaPlugin implements Listener {
     public void onPlayerJoin(PlayerJoinEvent joinEvent)
     {
         if(this.getConfig().getBoolean("Push when player joins the game?") == true) {
-        Player player = joinEvent.getPlayer();
-        player.sendMessage("Hello, " + player.getName() + ". This is MineBullet testing.");
-        getLogger().log(Level.INFO, player.getName() + " Has Joined");
+            Player player = joinEvent.getPlayer();
+                if(this.getConfig().getBoolean("debug") == true)
+                    player.sendMessage("Hello, " + player.getName() + ". Minebullet is in debug mode!.");
+            getLogger().log(Level.INFO, player.getName() + "  has joined, and Minebullet push on player leave enables, pushing.");
 
-        Pushbullet pushbullet = new Pushbullet(this.apiToken);
-        SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has joined.");
+            Pushbullet pushbullet = new Pushbullet(this.apiToken);
+            SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has joined.");
 
-        try {
-            pushbullet.push(note);
-            if(this.getConfig().getBoolean("debug") == true){getLogger().log(Level.INFO, "Successful Push");}
-        } catch (Exception e) {
-            //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
-            getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+            try {
+                pushbullet.push(note);
+                if(this.getConfig().getBoolean("debug") == true)
+                    getLogger().log(Level.INFO, "Successful Push");
+            } catch (Exception e) {
+                //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+                getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+            }
         }
-    }
     }
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent leaveEvent) {
         if (this.getConfig().getBoolean("Push when player leaves the game?") == true) {
             Player player = leaveEvent.getPlayer();
-            player.sendMessage("Hello, " + player.getName() + ". This is MineBullet testing.");
             getLogger().log(Level.INFO, player.getName() + " Has Left");
 
             Pushbullet pushbullet = new Pushbullet(this.apiToken);
-            SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left, and Minebullet push on player leave enables, pushing.");
+            SendablePush note = new SendableNotePush("Minecraft", player.getName() + " has left.");
             try {
                 pushbullet.push(note);
-                if(this.getConfig().getBoolean("debug") == true){getLogger().log(Level.INFO, "Successful Push");}
+                if(this.getConfig().getBoolean("debug") == true)
+                    getLogger().log(Level.INFO, "Successful Push");
             } catch (Exception e) {
                 //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
                 getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
