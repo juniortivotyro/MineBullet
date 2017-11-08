@@ -9,6 +9,7 @@ Click on the picture to go to the spigot page
 
   - Get a notification when a player joins and leaves
   - /alert command
+  - Notification when a player is banned
 
 # Config
 * token - Access Token from pushbullet.com/account
@@ -21,3 +22,7 @@ Click on the picture to go to the spigot page
  * Restart Server
  * Edit Config
  * Restart Server
+
+# Permissions
+ * minebullet.*
+ * minebullet.alert
