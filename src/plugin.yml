@@ -1,11 +1,16 @@
 name: MineBullet
-version: 1.0
+version: 1.2
 author: CDHoff
 main: com.cdhoff.MineBullet.MineBullet
 commands:
   alert:
     description: Alerts an admin about an important matter
     usage: /alert <message>
+  minebullet:
+    description: Main MineBullet Command / Help Menu
+    usage: /minebullet <reload>
+  minebullet reload:
+    description: Reloads MineBullet Config
 permissions:
   minebullet.*:
     description: Gives access to all commands.

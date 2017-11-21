@@ -102,8 +102,8 @@ public class MineBullet extends JavaPlugin implements Listener {
                 }*/
                 if (args[0].equalsIgnoreCase("reload")) {
                     try{
-                        sender. sendMessage(ChatColor.AQUA + "Config Reloaded");
                         Bukkit.getPluginManager().getPlugin("MineBullet").reloadConfig();
+                        sender.sendMessage(ChatColor.AQUA + "Config Reloaded");
                     }catch(Exception e){
                         sender.sendMessage(ChatColor.RED + "An error has occured");
                     }
@@ -118,74 +118,38 @@ public class MineBullet extends JavaPlugin implements Listener {
     }
 
 
+    public static String joinMessage = " has joined";
 
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent joinEvent)
-    {
-        if(getConfig().getBoolean("joinStatusPush")){
-
-
-    }
-        if(this.getConfig().getBoolean("joinPush")) {
+    public void onPlayerJoin(PlayerJoinEvent joinEvent) {
+        //If joinPush is set to true...
+        if (this.getConfig().getBoolean("joinPush")) {
             Player player = joinEvent.getPlayer();
-                if(this.getConfig().getBoolean("debug"))
-                    player.sendMessage("Hello, " + player.getName() + ". Minebullet is in debug mode!.");
-            Pushbullet pushbullet = new Pushbullet(this.apiToken);
 
-            String joinMessage = player.getName() + " has joined";
+                    if (getConfig().getBoolean("joinStatsPush")) {
 
-            if(!player.hasPlayedBefore())
-            {
-                joinMessage = joinMessage + " for the first time";
-                if(getConfig().getBoolean("joinStatsPush")){
-                    try{
-                        Player p = joinEvent.getPlayer();
-                        ViaAPI api = Via.getAPI();
-                        int ver = api.getPlayerVersion(player);
-                        //Send into Translator.translate(ver)
-                        //Receive Translator.version
-                        joinMessage = joinMessage + " with version ";  //+ Translated Value;
-                    }catch(Exception e){
-                        getServer().getConsoleSender().sendMessage(ChatColor.RED + "An Error has occured. Do you have ViaVersion installed? If not, set joinStatusPush to false in the config.");
-                    }
-                }
-                SendablePush note = new SendableNotePush("Minecraft", joinMessage);
-                try {
-                    pushbullet.push(note);
-                    if(this.getConfig().getBoolean("debug"))
-                        getLogger().log(Level.INFO, "Successful Push");
-                } catch (Exception e) {
-                    //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
-                    getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
-                }
-            }
-            if(player.hasPlayedBefore()){
-                try {
-                    if(getConfig().getBoolean("joinStatsPush")){
                         try{
-                            Player p = joinEvent.getPlayer();
-                            ViaAPI api = Via.getAPI();
-                            int ver = api.getPlayerVersion(player);
-                            joinMessage = joinMessage + " with version" + ver;
-                        }catch(Exception e){
-                            getServer().getConsoleSender().sendMessage(ChatColor.RED + "An Error has occured. Do you have ViaVersion installed? If not, set joinStatusPush to false in the config.");
+                            PlayerChecker.withViaVersion(joinEvent, player, pushbullet);
+                        }catch (NoClassDefFoundError e){
+                            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Is Viaversion installed? If not, either update the config or install ViaVersion");
+                            try{
+                                PlayerChecker.withoutViaVersion(joinEvent,player,pushbullet);
+                            }catch (Exception f){
+                                Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
+                            }
+                        }
+                    }else{
+                        try{
+                            PlayerChecker.withoutViaVersion(joinEvent,player,pushbullet);
+                        }catch (Exception f){
+                            Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
                         }
                     }
-                    SendablePush note = new SendableNotePush("Minecraft", joinMessage);
-                    pushbullet.push(note);
-                    if(this.getConfig().getBoolean("debug"))
-                        getLogger().log(Level.INFO, "Successful Push");
-                }catch (Exception e) {
-                    //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
-                    getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
-                }
-            }
-
-
 
         }
     }
+
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent leaveEvent) {
         if (this.getConfig().getBoolean("leavePush")) {
@@ -208,7 +172,6 @@ public class MineBullet extends JavaPlugin implements Listener {
                         if (this.getConfig().getBoolean("debug"))
                             getLogger().log(Level.INFO, "Successful Push");
                     } catch (Exception e) {
-                        //getLogger().log(Level.SEVERE, ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
                         getServer().getConsoleSender().sendMessage(ChatColor.RED + "An error has occured while trying to send the push. Have you updated the confing file yet?");
                     }
                 }

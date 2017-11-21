@@ -1,5 +1,12 @@
+#Access token from https://www.pushbullet.com/#settings/account. Go to that link and click "Create Account Token"
 token: "ABCD.......ABCD"
+#If this is set to true, you will get a push when a player joins
 joinPush: true
+#If this is set to true, the version will be added to the end of the message.
+joinStatsPush: false
+#If this is set to true, you will get a push when a player leaves
 leavePush: true
+#If this is set to true, you will get a push when a player gets banned when you leave
 banPush: true
+
 debug: false
