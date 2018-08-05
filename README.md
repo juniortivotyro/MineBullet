@@ -2,6 +2,8 @@
 
 Minebullet is a spigot plugin that allows you to get Pushbullet notifications about various server things! 
 
+Created by me using Jop-V/MinecraftPush as a base.
+
 Click on the picture to go to the spigot page
  
 
